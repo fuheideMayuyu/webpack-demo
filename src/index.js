@@ -1,13 +1,14 @@
+import _ from 'lodash';
+import numRef from './ref.json';
 
-async function getComponent() {
-  const element = document.createElement('div');
-   const { default: _ } = await import(/* webpackChunkName: "lodash" */ 'lodash');
-
-   element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-
-   return element;
+export function numToWord(num) {
+  return _.reduce(numRef, (accum, ref) => {
+    return ref.num === num ? ref.word : accum;
+  }, '');
 }
 
-getComponent().then(component => {
-  document.body.appendChild(component);
-})
+export function wordToNum(word) {
+  return _.reduce(numRef, (accum, ref) => {
+    return ref.word === word && word.toLowerCase() ? ref.num : accum;
+  }, -1);
+}

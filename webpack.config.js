@@ -6,16 +6,34 @@ module.exports = {
   mode: 'development',
   entry: {
     index: './src/index.js',
-   
   },
-
   output: {
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].bundle.js',
+    filename: 'webpack-numbers.js',
     path: path.resolve(__dirname, 'dist'),
-   
+    library: 'webpackNumbers',
+    libraryTarget: 'umd',
   },
-
+  externals: {
+    lodash: {
+      commonjs: 'lodash',
+      commonjs2: 'lodash',
+      amd: 'lodash',
+      root: '_',
+    },
+  },
+  optimization:{
+    moduleIds: 'hashed',
+    runtimeChunk: 'single',
+    splitChunks:{
+      cacheGroups:{
+        vendor:{
+          test:/[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks:'all'
+        }
+      }
+    }
+  },
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
@@ -25,7 +43,7 @@ module.exports = {
   plugins:[
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HtmlWebpackPlugin({
-      title: 'Development'
+      title: 'Caching'
     }),
   ]
 };
